@@ -258,7 +258,7 @@ const Page = () => {
             }
 
             {
-                screen &&
+                screen ?
                 <div className="selectseat">
                     <div className='timecont'>
                         {
@@ -304,7 +304,7 @@ const Page = () => {
                             disabled={isBooking}
                         >{isBooking ? 'Booking...' : 'Book Now'}</button>
                     </div>
-                </div>
+                </div>:<div>Loading...</div>
             }
         </div>
   )
