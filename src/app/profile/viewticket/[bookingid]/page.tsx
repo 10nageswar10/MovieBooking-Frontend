@@ -52,7 +52,7 @@ const Viewticketpage = () => {
         return `${hours}:${minutesStr} ${ampm}`;
     }
 
-    const getBooking=async()=>{
+    const getBooking=React.useCallback(async()=>{
         try{
             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/movie/getuserbooking/${bookingId}`,{
                 method:'GET',
@@ -73,9 +73,9 @@ const Viewticketpage = () => {
         catch(error){
             console.error(error);
         }
-    }
+    },[bookingId])
     
-    const getMovie=async(movieId:any)=>{
+    const getMovie=React.useCallback(async(movieId:any)=>{
         try{
             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/movie/movies/${movieId}`,{
                 method:'GET',
@@ -96,9 +96,9 @@ const Viewticketpage = () => {
         catch(error){
             console.error(error);
         }
-    }
+    },[])
 
-    const getScreen=async()=>{
+    const getScreen=React.useCallback(async()=>{
         try{
             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/movie/getscreen/${booking.screenId}`,{
                 method:'GET',
@@ -119,7 +119,7 @@ const Viewticketpage = () => {
         catch(error){
             console.error(error);
         }
-    }
+    },[booking])
 
     React.useEffect(()=>{
         getBooking()

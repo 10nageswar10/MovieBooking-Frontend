@@ -47,7 +47,7 @@ const Page = () => {
     }
 
 
-    const getSchedules=async()=>{
+    const getSchedules=React.useCallback(async()=>{
         fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/movie/schedulebymovie/${screenid}/${date}/${movie_id}`,{
             method:'GET',
             headers:{
@@ -67,9 +67,9 @@ const Page = () => {
             }
         })
         .catch(err=>console.log(err))
+    },[])
 
-    }
-    const getMovie =async()=>{
+    const getMovie =React.useCallback(async()=>{
         fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/movie/movies/${movie_id}`,{
           method:'GET',
           headers:{
@@ -87,12 +87,12 @@ const Page = () => {
         .catch((err)=>{
           console.log(err);
         })
-    }
+    },[movie_id])
     
     useEffect(()=>{
         getSchedules();
         getMovie();
-    },[date, movie_id, screenid])
+    },[date, movie_id, screenid,getMovie,getSchedules])
 
     
 

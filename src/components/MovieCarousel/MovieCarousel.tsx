@@ -113,8 +113,8 @@ const MovieCarousel = () => {
        {
         movies.map((movie,index)=>{
             return(
-                <SwiperSlide>
-                    <MovieCard movie={movie} user={user} key={index}/>
+                <SwiperSlide key={index}>
+                    <MovieCard movie={movie} user={user} />
                 </SwiperSlide>
             )
         })

@@ -6,7 +6,7 @@ import { usePathname,useParams} from 'next/navigation'
 import Link from 'next/link'
 
 
-const page = () => {
+const Page = () => {
   const pathname = usePathname();
   const params=useParams();
   const {movie_id,cityname}=params;
@@ -32,7 +32,7 @@ const page = () => {
     .catch((err)=>{
       console.log(err);
     })
-  },[])
+  },[movie_id])
 
 
   const getTheatres = React.useCallback(async(date:string)=>{
@@ -58,7 +58,7 @@ const page = () => {
     .catch((err)=>{
       console.log(err);
     })
-  },[selectedDate])
+  },[selectedDate,cityname,movie_id])
 
 
   React.useEffect(()=>{
@@ -123,4 +123,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page
