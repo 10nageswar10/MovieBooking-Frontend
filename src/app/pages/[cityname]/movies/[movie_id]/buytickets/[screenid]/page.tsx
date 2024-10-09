@@ -58,7 +58,7 @@ const Page = () => {
         .then(res=>res.json())
         .then(response=>{
             if(response.ok){
-                console.log(response.data)
+                console.log('API response:', response);
                 setScreen(response.data);
                 setSelectedTime(response.data.movieSchedulesforDate[0]);
             }
@@ -90,8 +90,11 @@ const Page = () => {
     },[movie_id])
     
     useEffect(()=>{
-        getSchedules();
-        getMovie();
+        const fetchData = async () => {
+            await Promise.all([getSchedules(), getMovie()]);
+        };
+    
+        fetchData();
     },[date, movie_id, screenid,getMovie,getSchedules])
 
     
@@ -117,7 +120,13 @@ const Page = () => {
 
     const generateSeatLayout = () => {
         const x = screen.movieSchedulesforDate.findIndex((t: any) => t.showTime === selectedTime.showTime)
-     
+        if (!screen || !screen.movieSchedulesforDate || !selectedTime) {
+            return <div>Loading...</div>; // Handle loading state
+        }
+        if (x === -1 || !screen.movieSchedulesforDate[x].notavailableseats) {
+            return <div>No unavailable seats found.</div>; // Handle case with no unavailable seats
+        }
+
         let notavailableseats = screen.movieSchedulesforDate[x].notavailableseats||[]
 
         return (
