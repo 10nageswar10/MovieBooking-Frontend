@@ -1,0 +1,148 @@
+.profile {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+  
+  .head {
+    text-align: center;
+    width: 100%;
+    color: var(--col1);
+    font-weight: 400;
+  }
+  
+  .user, .bookings {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* background-color: aqua; */
+  }
+  
+  .details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .detail {
+    flex: 1;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .detail h3 {
+    margin: 0;
+    color: var(--col1);
+    font-weight: 400;
+
+  }
+  
+  .booking {
+    margin: 20px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    
+  }
+  
+  .booking .detail {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .booking .detail h3 {
+    margin-right: 10px;
+    color: var(--col1);
+    font-weight: 400;
+        
+  }
+  
+  .booking .detail p {
+    margin: 0;
+  }
+  
+  /* Additional styling based on your specific needs */
+  
+
+
+  .booking{
+    display: flex;
+    flex-direction: column;
+    min-height: 50vh;
+    margin-top: 10px;
+    width:100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 2px solid #ccc;
+  }
+
+  .ticket-details{
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #ccc;
+    padding: 10px;
+    height: 100px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+
+  .movie-title{
+    font-size: 1.5em;
+  }
+
+  .ticket-details .details{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    font-size: 1em;
+    height: 100%;
+    text-align: center;
+    border-right: 1px solid #ccc;
+    font-weight: bold;
+  }
+
+  .ticket-details .detail-head{
+    color: var(--col1);
+    font-weight: bold;
+  }
+.booking .button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.booking button{
+    background-color: var(--col1);
+    color: white;
+    border: none;
+    justify-content: center;
+    border-radius: 4px;
+    height: 50px;
+    width: 100px;
+    margin-left: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+    text-decoration: none;
+}
+  .error p{
+    font-size: 18px;
+      font-family: sans-serif;
+      color: var(--col1);
+      text-align: center;
+  }
+
+  .booking button:hover{
+    background-color: #ff6347;
+}

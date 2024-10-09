@@ -1,0 +1,41 @@
+<div className="boooking" key={index}>
+                                    <div className="detail">
+                                        <h3>Movie</h3>
+                                        <p>{booking?.movieId}</p>
+                                    </div>
+                                    <div className="detail">
+                                        <h3>Screen</h3>
+                                        <p>{booking?.screenId}</p>
+                                    </div>
+                                    <div className="detail">
+                                        <h3>Seats</h3>
+                                        <p>{booking?.seats.map((seat:any)=>{
+                                            return(
+                                                <span>{seat.row}{seat.col}{seat.seat_id},</span>
+                                            )
+                                        })}</p>
+                                    </div>
+                                    <div className="detail">
+                                        <h3>Price</h3>
+                                        <p>{booking?.totalPrice}</p>
+                                    </div>
+                                    <div className="detail">
+                                        <h3>Payment Type</h3>
+                                        <p>{booking?.paymentType}</p>
+                                    </div>
+                                    <div className="detail">
+                                        <h3>Payment Id</h3>
+                                        <p>{booking?.paymentId}</p>
+                                    </div>
+                                    <div className="detail">
+                                        <h3>Show Date</h3>
+                                        <p>{booking?.showDate}</p>
+                                    </div>
+                                    <div className="detail">
+                                        <h3>Show Time</h3>
+                                        <p>{booking?.showTime}</p>
+                                    </div>
+                                    <div className="detail"><h3>QR Code</h3>
+                                    <img src={booking.qrCode} alt="QR Code" width="100" height="100" />
+                                    </div>
+                                </div>

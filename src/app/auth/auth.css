@@ -1,0 +1,164 @@
+.authin{
+    display: flex;
+    flex-direction: row;
+    height: 135vh;
+}
+.authin .left{
+    width: 50%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: center;
+}
+
+.authin .leftregis{
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.authin .leftregis h1{
+    margin-bottom: 60px;
+    font-size: 4.5rem;
+    color: white;
+    width: 100%;
+}
+.authin .left h1{
+    margin-top: 20px;
+    font-size: 4.5rem;
+    color: white;
+    width: 100%;
+}
+.authin .left img{
+    width: 100%;
+    height: 100%;
+}
+.authin .right{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    background-color: white;
+}
+
+.authin .right .form-cont{
+    width:80%;
+    height: 90%;
+}
+
+/* .authin .right .form-sub-cont{
+} */
+
+.authin .right .form-cont h1{
+    margin: 20px 0px;
+    font-size: 2rem;
+}
+.authin .right .form-cont h3{
+    margin-bottom: 40px;
+    width: 50%;
+    font-size: 1rem;
+    font-weight: 400;
+    color: gray;
+}
+
+.authin .right .form-cont label{
+    font-family: 'Roboto', sans-serif;
+    display: block;
+    padding: 5px 0px;
+    color: gray;
+}
+
+.authin .right .form-sub-cont .input-cont{
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    border: 1px solid gray;
+    padding: 3px 3px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    height: 40px;
+}
+.authin .right .form-sub-cont input::placeholder{
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.authin .right .form-sub-cont{
+    width: 100%;
+    margin: 10px 0px;
+}
+
+.authin .right .form-cont button{
+    /* background-color: #e60000;   */
+    background-color: #db143c;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    font-size: 1rem;
+    margin: 20px 0px;
+    cursor: pointer;
+}
+
+.authin .right .form-cont button:hover{
+    /* background-color: #cc0000; */
+    background-color: #ff6347;
+
+}
+
+.authin .right .form-sub-cont .input-cont input{
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 5px;
+    height: 100%;
+    border: none;
+    width: 100%;
+    caret-color: var(--col1);
+}
+
+.input-cont input:focus{
+    outline: none;
+}
+.authin .right .form-cont .authlink{
+    color: gray;
+}
+.authin .right .form-cont .authlink .link{
+    color: var(--col1);
+}
+.formerror {
+    color: var(--col1);
+    margin: 10px 0px;
+}
+
+/* show password icon */
+.input-cont .toggle-icon{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    height: fit-content;
+    width: fit-content;
+}
+
+.authin .icon{
+    color: var(--col1);
+}
+.authin .passIcon{
+    stroke-width: 1.5;
+}
+
+/* SELECT STYLE */
+.input-cont .select-city{
+    width: 100%;
+    padding: 3px 3px;
+    border: none;
+    border-radius: 5px;
+    height: 100%;
+    background-color: white;
+    color: black;
+    font-size: 1rem;
+}
+.input-cont .select-city:focus{
+    outline: none;
+}

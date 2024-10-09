@@ -1,0 +1,15 @@
+.main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.movie_div{
+    margin-top:25px;
+    width: 95%;
+
+}
+
+.movie_div h1{
+    margin:20px 0px;
+}

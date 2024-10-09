@@ -1,0 +1,83 @@
+.main{
+    background-color: white;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+}
+
+.right-div{
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+.body-cont{
+    display: flex;
+    flex-direction: column;
+    border: 2px solid var(--col1);
+    background-color: white;
+    border-radius: 10px;
+    height: 70%;
+    width: 75%;
+}
+
+.body-cont h1{
+    margin: 0px 20px;
+    margin-top: 40px;
+    font-family: sans-serif;
+    text-align: center;
+}
+
+.body-cont p{
+    font-family: sans-serif;
+    text-align: center;
+    margin: 10px;
+}
+.body-cont input{
+    display: block;
+    width: 75%;
+    height: 30px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 1.5em;
+    border: 1px solid var(--col1);
+    margin-left: 12%;
+    text-align: center;
+}
+.body-cont input::placeholder{
+    text-align: center;
+    font-size: 1em;
+}
+.body-cont :focus::placeholder {
+    color: transparent; /* Make the placeholder text transparent */
+}
+
+.body-cont .enabled{
+    font-family: sans-serif;
+    color: red;
+    cursor: pointer;
+}
+.body-cont .disabled{
+    font-family: sans-serif;
+    color: #ff6347;
+    cursor: not-allowed;
+}
+.body-cont button{
+    color: white;
+    font-family: sans-serif;
+    background-color: #db143c;
+    height: 40px;
+    padding: 10px;
+    width: 70%;
+    margin: 20px;
+    margin-left: 17%;
+    border: 0px;
+    border-radius: 10px;
+}
+.body-cont button:hover{
+    background-color: #ff6347;
+}
+

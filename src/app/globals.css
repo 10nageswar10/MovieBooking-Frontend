@@ -1,0 +1,28 @@
+*{
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root{
+  /* --col1:#f84464; */
+  --col1:#CD1818;
+  --col3:#0B2F9F;
+  /* --col2:#333333; */
+  --col2:#191919;
+}
+.linkstylenone{
+  text-decoration: none;
+  color: white;
+  margin-right: 20px;
+}
+.theme-btn1{
+  background-color: var(--col1);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+  text-decoration: none;
+  margin-right: 20px;
+}

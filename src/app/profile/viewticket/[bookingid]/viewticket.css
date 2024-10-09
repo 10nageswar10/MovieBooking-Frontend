@@ -1,0 +1,128 @@
+.main-cont{
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: center;
+    background-color: #e5e5e5;
+    height: 140vh;
+    width: 100%;
+}
+
+
+.ticket-div{
+    background-color: white;
+    height: 75%;
+    width:40%;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+
+
+.ticket-div .details-div{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+.details-div .movie-div{
+    display: flex;
+    height: 30%;
+    padding-bottom: 30px;
+    border-bottom: 2px dashed black;;
+}
+.movie-div img{
+    border-radius: 10px;
+}
+.movie-div .details{
+    display: block;
+    margin-left: 20px;
+}
+.movie-div .details p{
+    color: black;
+    margin: 10px;
+}
+.movie-div{
+    height: 100%;
+}
+
+.qr-div{
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    display: flex;
+    padding: 10px;
+    height: 30%;
+    background-color: #e5e5e5;
+    border-radius: 20px;
+
+}
+.qr-div .details{
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+}
+
+.info-div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+
+.info-div .theme_btn1{
+    background-color: var(--col1);
+    color: white;
+    border: none;
+    justify-content: center;
+    margin-top: 30px;
+    border-radius: 4px;
+    height: 50px;
+    width: fit-content;
+    padding: 5px 10px;
+    cursor: pointer;
+    text-decoration: none;
+}
+.info-div .amount-div{
+    display: flex;
+    justify-content: center;
+    border-radius: 15px;
+    width: 90%;
+    font-weight: bold;
+}
+
+.info-div p{
+    margin-top: 10px;
+}
+
+.bookId{
+    margin-top: 20px;
+    font-weight: bold;
+    color: black;
+}
+.bookId span{
+    font-weight: lighter;
+}
+
+.theme_btn1:hover{
+    background-color: #ff6347;
+}
+
+.down-disabled{
+        background-color: #ff6347;
+        color: white;
+        border: none;
+        justify-content: center;
+        margin-top: 30px;
+        border-radius: 4px;
+        height: 50px;
+        width: fit-content;
+        padding: 5px 10px;
+        cursor: not-allowed;
+        text-decoration: none;
+}
