@@ -3,15 +3,13 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { useSearchParams } from 'next/navigation';
 import otp_back from '@/assets/otp_back2.png'
 import './verifyemail.css'
 
 const VerifyOtpPage = () => {
   const router = useRouter();
-  const searchparams=useSearchParams();
-  const userId = searchparams.get('userId');
-  const email=searchparams.get('email'); // Retrieve userId and email from the query parameters
+  const [userId, setUserId] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
 
   const [otp, setOtp] = useState('');
   const [error, setError] = useState('');
@@ -20,6 +18,14 @@ const VerifyOtpPage = () => {
 
   const [isDisabled,setIsDisabled]=React.useState<boolean>(false);
   const [countdown, setCountdown] = useState(20);;
+
+
+  React.useEffect(() => {
+    // Parse query parameters from the URL
+    const params = new URLSearchParams(window.location.search);
+    setUserId(params.get('userId'));
+    setEmail(params.get('email'));
+  }, []);
 
   React.useEffect(() => {
     let timer:any;
@@ -63,10 +69,12 @@ const VerifyOtpPage = () => {
         router.push('/auth/signin');
       } else {
         setError(result.message);
+        setSuccess('')
       }
     } catch (error) {
       console.error('Error verifying OTP', error);
       setError('An error occurred while verifying the OTP.');
+      setSuccess('')
     }
   };
 
@@ -87,6 +95,7 @@ const VerifyOtpPage = () => {
     } catch (error) {
       console.error('Error resending OTP', error);
       setError('An error occurred while resending the OTP.');
+      setSuccess('')
       setIsDisabled(false); // Enable the button after resending OTP
       setCountdown(0)
     }
@@ -108,12 +117,15 @@ const VerifyOtpPage = () => {
                 placeholder="Enter OTP"
                 value={otp}
                 onChange={handleChange}
+                required
+                maxLength={6}
+                pattern="\d{6}"
                 />
                 {error && <p style={{ color: 'red' }}>{error}</p>}
                 {success && <p style={{ color: 'green' }}>{success}</p>}
                 <p>Didn&apos;t Receive OTP Code?</p> 
                 {countdown==0?<p className='enabled' onClick={handleResendOtp}>Resend OTP</p>:<p className='disabled'>Resend OTP in {countdown} sec</p>}
-                <button type="submit">Verify OTP</button>
+                <button type="submit" disabled={isDisabled||!otp}>{isDisabled ? 'Please wait...' : 'Verify OTP'}</button>
             </form>
             </div>
         </div>

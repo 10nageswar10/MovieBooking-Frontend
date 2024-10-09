@@ -67,7 +67,7 @@ const Page = () => {
             }
         })
         .catch(err=>console.log(err))
-    },[])
+    },[screenid,date,movie_id])
 
     const getMovie =React.useCallback(async()=>{
         fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/movie/movies/${movie_id}`,{

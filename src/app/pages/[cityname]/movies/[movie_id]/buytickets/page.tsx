@@ -58,7 +58,7 @@ const Page = () => {
     .catch((err)=>{
       console.log(err);
     })
-  },[selectedDate,cityname,movie_id])
+  },[cityname,movie_id])
 
 
   React.useEffect(()=>{

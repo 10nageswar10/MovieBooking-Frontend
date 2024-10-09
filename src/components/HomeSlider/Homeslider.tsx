@@ -10,8 +10,6 @@ import 'swiper/css/navigation';
 // import required modules
 import { Pagination, Navigation } from 'swiper/modules';
 
-const height=window.innerHeight;
-const width=window.innerWidth;
 const Homeslider = () => {
     const [banners,setBanners]=useState([
         {
@@ -22,6 +20,18 @@ const Homeslider = () => {
         }
     ]
     );
+
+    const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+
+    React.useEffect(() => {
+        if (typeof window !== 'undefined') {
+            setDimensions({
+                width: window.innerWidth,
+                height: window.innerHeight,
+            });
+        }
+    }, []);
+
   return (
     <Swiper
         slidesPerView={1}
@@ -37,7 +47,7 @@ const Homeslider = () => {
         {
             banners.map((banner, index) => (
                 <SwiperSlide key={index}>
-                    <Image src={banner.imageUrl} alt="banner" width={width} height={height/1.5} 
+                    <Image src={banner.imageUrl} alt="banner" width={dimensions.width} height={dimensions.height/1.5} 
                     style={{
                         objectFit: 'cover',
                         backgroundPosition:'center',
