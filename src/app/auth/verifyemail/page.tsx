@@ -111,7 +111,7 @@ const VerifyOtpPage = () => {
                 />
                 {error && <p style={{ color: 'red' }}>{error}</p>}
                 {success && <p style={{ color: 'green' }}>{success}</p>}
-                <p>Didn't Receive OTP Code?</p> 
+                <p>Didn&apos;t Receive OTP Code?</p> 
                 {countdown==0?<p className='enabled' onClick={handleResendOtp}>Resend OTP</p>:<p className='disabled'>Resend OTP in {countdown} sec</p>}
                 <button type="submit">Verify OTP</button>
             </form>

@@ -6,7 +6,7 @@ import Image from 'next/image'
 import empty_book from '@/assets/empty_book.jpg'
 import { useRouter } from 'next/navigation'
 
-const page = () => {
+const Page = () => {
     const router=useRouter();
     const [bookings,setBookings]=React.useState<any>([])
     const [user,setUser]=React.useState<any>(null)
@@ -69,7 +69,7 @@ const page = () => {
         console.log(err)
        }
     }
-    const getBookings=async()=>{
+    const getBookings=React.useCallback(async()=>{
         try{
             const response=await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/movie/getuserbookings`,{
                 method:'GET',
@@ -96,8 +96,8 @@ const page = () => {
         catch(err){
             console.log(err)
         }
-    }
-    const getUserData=async()=>{
+    },[])
+    const getUserData=React.useCallback(async()=>{
         fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/auth/getuser`,{
             method:'GET',
             headers:{
@@ -115,13 +115,13 @@ const page = () => {
                 console.log(data)
             }
         })
-    }
+    },[])
 
 
     React.useEffect(()=>{
         getBookings()
         getUserData()
-    },[])
+    },[getBookings,getUserData])
 
     return (
     <div className="profile">
@@ -193,4 +193,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

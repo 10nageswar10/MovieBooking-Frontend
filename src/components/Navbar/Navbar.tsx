@@ -34,6 +34,7 @@ const Navbar = () => {
       }
       else{
         setLoggedIn(false)
+        console.log('Unauthorized, please log in.');
       }
     })
     .catch((error)=>{

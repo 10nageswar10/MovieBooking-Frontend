@@ -1,12 +1,12 @@
 'use client'
 import React from 'react'
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import './selectSeat.css'
 import Link from 'next/link'
 import { useParams,usePathname,useSearchParams } from 'next/navigation'
 import { toast } from 'react-toastify'
 
-const page = () => {
+const Page = () => {
     const params=useParams();
     const pathname=usePathname();
     const searchParams=useSearchParams();
@@ -14,11 +14,11 @@ const page = () => {
     const {movie_id,cityname,screenid}=params;
     console.log(movie_id,screenid,cityname,date);
 
-    const [screen,setScreen]=React.useState<any>(null)
-    const [selectedTime,setSelectedTime]=React.useState<any>(null) 
-    const [movie,setMovie]=React.useState<any>(null)
-    const [isBooking, setIsBooking] = React.useState(false);
-
+    const [screen,setScreen]=useState<any>(null)
+    const [selectedTime,setSelectedTime]=useState<any>(null) 
+    const [movie,setMovie]=useState<any>(null)
+    const [isBooking, setIsBooking] = useState(false);
+    const [selectedSeats,setSelectedSeats]=useState<any[]>([])
 
     const formatTime = (time:any) => {
         if (!time) {
@@ -89,13 +89,13 @@ const page = () => {
         })
     }
     
-    React.useEffect(()=>{
+    useEffect(()=>{
         getSchedules();
         getMovie();
-    },[])
+    },[date, movie_id, screenid])
 
     
-    const [selectedSeats,setSelectedSeats]=React.useState<any[]>([])
+
     const selectdeselectseat=(seat:any)=>{
         console.log(seat)
         const isselected=selectedSeats.find((s:any)=>(
@@ -300,4 +300,4 @@ const page = () => {
         </div>
   )
 }
-export default page
+export default Page

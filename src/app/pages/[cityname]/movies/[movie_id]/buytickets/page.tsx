@@ -14,7 +14,7 @@ const page = () => {
   const [movie,setMovie]=React.useState<any>(null)
   const [theatres,setTheatres]=React.useState<any>(null)
 
-  const getMovie =async()=>{
+  const getMovie =React.useCallback(async()=>{
     fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/movie/movies/${movie_id}`,{
       method:'GET',
       headers:{
@@ -32,8 +32,10 @@ const page = () => {
     .catch((err)=>{
       console.log(err);
     })
-  }
-  const getTheatres = async(date:string)=>{
+  },[])
+
+
+  const getTheatres = React.useCallback(async(date:string)=>{
     let movieId=movie_id;
     let city=cityname;
     fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/movie/screensbymovieschedule/${city}/${date}/${movieId}`,{
@@ -56,16 +58,16 @@ const page = () => {
     .catch((err)=>{
       console.log(err);
     })
-  }
+  },[selectedDate])
 
 
   React.useEffect(()=>{
     getMovie()
-  },[])
+  },[getMovie])
 
   React.useEffect(()=>{
     getTheatres(selectedDate)
-  },[selectedDate])
+  },[getTheatres,selectedDate])
 
 
 

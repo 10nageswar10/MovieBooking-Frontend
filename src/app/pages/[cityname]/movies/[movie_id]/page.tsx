@@ -25,7 +25,7 @@ const Moviepage = () => {
     const [movie,setMovie]=React.useState<any>(null)
     console.log(movie_id);
 
-    const getMovies=async()=>{
+    const getMovies=React.useCallback(async()=>{
         fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/movie/movies/${movie_id}`,{
           method: 'GET',
           headers: {
@@ -43,10 +43,11 @@ const Moviepage = () => {
         console.log(err)
       })
       }
+    ,[movie_id]);
 
       React.useEffect(()=>{
         getMovies();
-      },[movie_id])
+      },[getMovies])
 
       const totalmin=movie?.duration;
       const hours=Math.floor(totalmin/60);

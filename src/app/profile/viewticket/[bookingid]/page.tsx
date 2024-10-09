@@ -8,7 +8,7 @@ import { useParams } from 'next/navigation'
 import { toast } from 'react-toastify'
 
 
-const viewticketpage = () => {
+const Viewticketpage = () => {
     const params=useParams();
     const bookingId=params.bookingid;
     const [booking,setBooking]=React.useState<any>(null)
@@ -123,18 +123,18 @@ const viewticketpage = () => {
 
     React.useEffect(()=>{
         getBooking()
-    },[])
+    },[getBooking])
 
     useEffect(() => {
         if (booking && booking.movieId) {
             getMovie(booking.movieId);
         }
-    }, [booking]);
+    }, [booking,getMovie]);
     useEffect(() => {
         if (booking && booking.screenId) {
             getScreen();
         }
-    }, [booking]);
+    }, [booking,getScreen]);
 
 
     const downloadTicket = async () => {
@@ -216,4 +216,4 @@ const viewticketpage = () => {
   )
 }
 
-export default viewticketpage
+export default Viewticketpage
