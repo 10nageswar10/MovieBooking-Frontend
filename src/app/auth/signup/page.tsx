@@ -24,10 +24,10 @@ interface FormData{
 }
 
 
-const signup = () => {
+const Signup = () => {
 
 
-    const [cities,setCities]=React.useState<any>([])
+    const [cities,setCities]= useState<any>([])
 
     const getcities = async () => {
         fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/auth/getcities`,{
@@ -57,11 +57,9 @@ const signup = () => {
         })       
     }
     
-    React.useEffect(()=>{
+    useEffect(()=>{
         getcities()
     },[])
-
-    const [selectedCity, setSelectedCity] = React.useState<any>(null)
 
     const router=useRouter();
     const [formData, setFormData] = useState<FormData>({ 
@@ -272,4 +270,4 @@ const signup = () => {
   )
 }
 
-export default signup
+export default Signup

@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Image from "next/image";
 import styles from './page.module.css';
 import Navbar from "@/components/Navbar/Navbar";
@@ -18,8 +18,8 @@ interface FormData{
 }
 
 
-const signin = () => {
-    const [formData, setFormData] = useState<FormData>({ 
+const Signin = () => {
+    const [formData, setFormData] = React.useState<FormData>({ 
         email: '', 
         password: '' 
     });
@@ -31,7 +31,7 @@ const signin = () => {
         backgroundPosition: 'center', // Center the image
         backgroundRepeat: 'no-repeat' // Prevent repeating
     };
-    const [errors,setErrors]=useState<Record<string,string>>({});
+    const [errors,setErrors]=React.useState<Record<string,string>>({});
     const handleChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
         const {name,value}=e.target;
         setFormData({
@@ -39,7 +39,7 @@ const signin = () => {
             [name]:value
         });
     };
-    const [showPassword, setShowPassword] = useState(false);
+    const [showPassword, setShowPassword] = React.useState(false);
     const handleToggle = () => {
         setShowPassword(!showPassword);
     };
@@ -155,7 +155,7 @@ const signin = () => {
                     Login
                 </button>
                 <p className="authlink">
-                    Don't have an account? <Link href="/auth/signup" className="link">Register</Link>
+                    Don&apos;t have an account? <Link href="/auth/signup" className="link">Register</Link>
                 </p>
             </form>
         </div>
@@ -163,4 +163,4 @@ const signin = () => {
   )
 }
 
-export default signin
+export default Signin
