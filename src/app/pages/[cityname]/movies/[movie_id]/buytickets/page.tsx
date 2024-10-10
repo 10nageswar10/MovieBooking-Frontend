@@ -38,10 +38,10 @@ const Page = () => {
   const getTheatres = React.useCallback(async(date:string)=>{
     let movieId=movie_id;
     let city=cityname;
-    const originalDate=new Date(date);
-    const incrementedDate=originalDate.setDate(originalDate.getDate() + 1);
-    
-    fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/movie/screensbymovieschedule/${city}/${incrementedDate}/${movieId}`,{
+    const newDate = new Date(date);
+    newDate.setDate(newDate.getDate() + 1); // Increment by one day
+
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/movie/screensbymovieschedule/${city}/${newDate}/${movieId}`,{
       method:'GET',
       headers:{
         'Content-Type':'application/json'
@@ -85,8 +85,10 @@ const Page = () => {
             <h3>{movie.genre.join(', ')}</h3>
           </div>
           <DatePicker getSelectedDay={(date:any)=>{
+            const newDate:any=new Date(date)
             console.log(date)
-            setSelectedDate(date)
+            setSelectedDate(newDate)
+            getTheatres(newDate);
           }}
                     endDate={100}
                     selectDate={selectedDate}
