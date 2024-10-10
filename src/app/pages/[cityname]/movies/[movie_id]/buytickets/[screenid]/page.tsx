@@ -120,9 +120,6 @@ const Page = () => {
 
     const generateSeatLayout = () => {
         const x = screen.movieSchedulesforDate.findIndex((t: any) => t.showTime === selectedTime.showTime)
-        if (!screen || !screen.movieSchedulesforDate || !selectedTime) {
-            return <div>Loading...</div>; // Handle loading state
-        }
         if (x === -1 || !screen.movieSchedulesforDate[x].notavailableseats) {
             return <div>No unavailable seats found.</div>; // Handle case with no unavailable seats
         }
