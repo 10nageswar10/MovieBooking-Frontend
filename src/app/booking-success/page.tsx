@@ -16,7 +16,7 @@ const BookingSuccessComponent = () => {
   const hasFetched=useRef(false);
 
   const [paymentId,setPaymentId]=useState<any>(null)
-  const [countdown, setCountdown] = useState(10);
+  const [countdown, setCountdown] = useState(0);
   
   const [dateofShow,setDateofShow]=useState<any>(null)
   const [moviename,setMovieName]=useState<any>(null)
@@ -56,7 +56,6 @@ const getMovieName=async(movieId:string)=>{
     const confirmBooking = useCallback(async (paymentIntent:any,session:any) => {
       if (!paymentIntent) {
         toast.error('Payment intent not found. Please try again.');
-        setLoading(false);
         return;
       }
       try {
@@ -84,6 +83,8 @@ const getMovieName=async(movieId:string)=>{
         const data = await res.json();
         if (data.ok) {
           toast.success('Ticket booked successfully');
+          setCountdown(10)
+          setLoading(false);
         } else {
           toast.error(data.message);
         }

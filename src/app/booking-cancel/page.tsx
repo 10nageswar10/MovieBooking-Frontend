@@ -33,6 +33,9 @@ const BookingCancel=() => {
             <h1>Your Payment has been Canceled</h1>
           </div>
           <Image src={pay_cancel} alt="payment cancel"height={200} width={200}/>
+          <button onClick={()=>{
+            router.push('/');  // Change this to your desired route
+          }}>Go to HomePage</button>
           <p style={{'marginTop':'10px'}}>You will be redirected to Home Page in {countdown} seconds...</p>
         </div>
       </div>
