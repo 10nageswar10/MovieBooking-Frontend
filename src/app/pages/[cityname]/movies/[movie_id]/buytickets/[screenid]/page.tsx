@@ -5,14 +5,14 @@ import './selectSeat.css'
 import Link from 'next/link'
 import { useParams,usePathname,useSearchParams } from 'next/navigation'
 import { toast } from 'react-toastify'
-import { loadStripe } from '@stripe/stripe-js'
+import { loadStripe,Stripe } from '@stripe/stripe-js'
 import Loading from '@/components/Loading/Loading'
 
-const stripeKey=process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+const stripeKey: string | undefined = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
 if(!stripeKey){
     toast.error('Missing Stripe Publishable Key')
 }
-const stripePromise = stripeKey ? loadStripe(stripeKey) : null;
+const stripePromise: Promise<Stripe | null> = stripeKey ? loadStripe(stripeKey) : Promise.resolve(null);
 
 const Page = () => {
     const params=useParams();
@@ -223,8 +223,26 @@ const Page = () => {
             });
             const session = await res.json();
       
+            if (!stripeKey) {
+                toast.error('Stripe is not configured correctly.', {
+                    position: 'top-right',
+                    autoClose: 3000,
+                });
+                setIsBooking(false);
+                return;
+            }
+
             const stripe = await stripePromise;
 
+            if (!stripe) {
+                toast.error('Stripe failed to initialize.', {
+                    position: 'top-right',
+                    autoClose: 3000,
+                });
+                setIsBooking(false);
+                return;
+            }
+            
             const bookingDetails={
                 showTime: selectedTime ? selectedTime.showTime : '',
                 showDate: date,
