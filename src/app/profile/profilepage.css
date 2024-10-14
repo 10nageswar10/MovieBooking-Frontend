@@ -118,6 +118,13 @@
     color: var(--col1);
     font-weight: bold;
   }
+
+  .ticket-details .details .paymentiddiv{
+    font-size: 10px;
+    font-weight: 500;
+    width: 100%;
+    text-wrap: nowrap;
+  }
 .booking .button{
   display: flex;
   justify-content: center;
@@ -145,4 +152,71 @@
 
   .booking button:hover{
     background-color: #ff6347;
+}
+
+.detail .verifylink{
+  text-decoration: none;
+  height: fit-content;
+  width: fit-content;
+  font-family: sans-serif;
+  font-size: 11px;
+  padding: 3px 7px;
+  border-radius: 20px;
+  background-color: red;
+  border: 0px;
+  cursor: pointer;
+  color: white;
+  margin-left: 10px;
+}
+
+.detail .verified{
+  background-color: green;
+  color: white;
+  cursor: not-allowed;
+}
+
+.detail .email-div{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.booking-options{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.booking-options h2{
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  width: 47%;
+  cursor: pointer;
+  font-weight: 200;
+  border-radius: 20px;
+  border: 1px solid gray;
+}
+
+.booking-options .option-active{
+  border: 2px solid var(--col1);
+  color: var(--col1);
+  font-weight: 600;
+}
+
+.status-pending{
+  background-color: red;
+  color: white;
+  font-size: 0.8em;
+  border-radius: 20px;
+  padding: 5px;
+}
+
+.status-success{
+  background-color: green;
+  color: white;
+  font-size: 0.8em;
+  border-radius: 20px;
+  padding: 5px;
 }

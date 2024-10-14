@@ -127,6 +127,10 @@
 .authin .right .form-cont .authlink .link{
     color: var(--col1);
 }
+.fp-link{
+    color: var(--col1);
+    margin-bottom: 20px;
+}
 .formerror {
     color: var(--col1);
     margin: 10px 0px;

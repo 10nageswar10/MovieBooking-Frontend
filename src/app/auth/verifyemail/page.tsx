@@ -18,13 +18,43 @@ const VerifyOtpPage = () => {
 
   const [isDisabled,setIsDisabled]=React.useState<boolean>(false);
   const [countdown, setCountdown] = useState(20);;
+  
+  const [user, setUser]=useState<any>(null)
+  const [notVerified,setNotVerified]=useState<any>(false)
 
+  const getUserData=React.useCallback(async()=>{
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/auth/getuser`,{
+        method:'GET',
+        headers:{
+            'Content-Type':'application/json',
+        },
+        credentials:'include',
+    })
+    .then((res)=>res.json())
+    .then((data)=>{
+        if(data.ok){
+            console.log(data)
+            setUser(data.data)
+        }
+        else{
+            console.log(data)
+        }
+    })
+},[]) 
+
+React.useEffect(() => {
+  if (user && user.verified === false) {
+    setNotVerified(true);
+    setCountdown(0);
+  }
+}, [user]);
 
   React.useEffect(() => {
     // Parse query parameters from the URL
     const params = new URLSearchParams(window.location.search);
     setUserId(params.get('userId'));
     setEmail(params.get('email'));
+    getUserData()
   }, []);
 
   React.useEffect(() => {
@@ -66,7 +96,13 @@ const VerifyOtpPage = () => {
       if (result.status === 'VERIFIED') {
         setSuccess('OTP verified successfully!');
         // Redirect to the login page or home page after successful verification
-        router.push('/auth/signin');
+        if(notVerified){
+          router.push('/profile');
+          setNotVerified(false)
+        }
+        else{
+          router.push('/auth/signin');
+        }
       } else {
         setError(result.message);
         setSuccess('')
@@ -109,7 +145,7 @@ const VerifyOtpPage = () => {
         <div className='right-div'>
             <div className="body-cont">
             <h1>OTP Verification</h1>
-            <p>Enter 6 Digit OTP sent to {email}</p>
+            <p>{notVerified?`Click Send OTP to verify ${email}`:`Enter 6 Digit OTP sent to ${email}`}</p>
             <form onSubmit={handleSubmit}>
                 <input
                 type="text"
@@ -124,7 +160,7 @@ const VerifyOtpPage = () => {
                 {error && <p style={{ color: 'red' }}>{error}</p>}
                 {success && <p style={{ color: 'green' }}>{success}</p>}
                 <p>Didn&apos;t Receive OTP Code?</p> 
-                {countdown==0?<p className='enabled' onClick={handleResendOtp}>Resend OTP</p>:<p className='disabled'>Resend OTP in {countdown} sec</p>}
+                {countdown==0?<p className='enabled' onClick={handleResendOtp}>{notVerified?'Send OTP':'Resend OTP'}</p>:<p className='disabled'>Resend OTP in {countdown} sec</p>}
                 <button type="submit" disabled={isDisabled||!otp}>{isDisabled ? 'Please wait...' : 'Verify OTP'}</button>
             </form>
             </div>

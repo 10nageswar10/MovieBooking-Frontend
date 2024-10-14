@@ -38,10 +38,8 @@ const Page = () => {
   const getTheatres = React.useCallback(async(date:string)=>{
     let movieId=movie_id;
     let city=cityname;
-    const newDate = new Date(date);
-    newDate.setDate(newDate.getDate() + 1); // Increment by one day
 
-    fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/movie/screensbymovieschedule/${city}/${newDate}/${movieId}`,{
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/movie/screensbymovieschedule/${city}/${date}/${movieId}`,{
       method:'GET',
       headers:{
         'Content-Type':'application/json'

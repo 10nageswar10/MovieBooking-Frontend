@@ -6,15 +6,19 @@ import Image from 'next/image'
 import { useState,useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import { toast } from 'react-toastify'
+import { useRouter } from 'next/navigation'
 
 
 const Viewticketpage = () => {
+    const router=useRouter();
     const params=useParams();
     const bookingId=params.bookingid;
     const [booking,setBooking]=React.useState<any>(null)
     const [movie,setMovie]=React.useState<any>(null)
     const [screen,setScreen]=React.useState<any>(null)
     const [isDownloading,setIsDownloading]=React.useState<any>(null)
+    const [isCancelling,setIsCancelling]=React.useState<any>(null)
+
 
     const formatDate = (isoDateString:any) => {
         const date = new Date(isoDateString);
@@ -170,13 +174,41 @@ const Viewticketpage = () => {
         }
     };
 
+    const cancelTicket = async () => {
+        try {
+            setIsCancelling(true); 
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/movie/cancelticket`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ bookingId: booking._id }), // Pass the booking ID
+            });
+
+            const data = await response.json();
+            if (data.ok) {
+                toast.success('Ticket canceled successfully');
+                router.push('/profile'); // Redirect to the profile page
+            } else {
+                toast.error(data.message || 'Failed to cancel ticket');
+            }
+        } catch (error) {
+            console.error('Error canceling ticket:', error);
+            toast.error('Error canceling ticket');
+        }
+        finally {
+            setIsCancelling(false);
+        }
+    };
+
 
 
   return (
     <div>
         {
             booking && movie && screen&&
-            <div className='main-cont'>
+            <div className='viewticket-cont'>
                 <h1 style={{'margin':'30px'}}>View Ticket</h1>
                 <div className='ticket-div'>
                     <div className="details-div">
@@ -205,7 +237,11 @@ const Viewticketpage = () => {
                         <div className="info-div">
                             <div className='amount-div'>Total Amount <span>:  Rs.{booking.totalPrice}</span></div>
                             <p>A confirmation email will be sent within 15 mins of booking</p>
-                            <button className={isDownloading?'down-disabled':'theme_btn1'} onClick={downloadTicket} disabled={isDownloading}>{isDownloading ? 'Downloading...' : 'Download Ticket'}</button>
+                            <p>In case of Cancellation of ticket, Amount will be refunded within 7 days</p>
+                            <div className="button-div">
+                                <button className={isCancelling?'down-disabled':'theme_btn1'} onClick={cancelTicket} disabled={isCancelling}>{isCancelling ? 'Cancelling...' : 'Cancel Ticket'}</button>
+                                <button className={isDownloading?'down-disabled':'theme_btn1'} onClick={downloadTicket} disabled={isDownloading}>{isDownloading ? 'Downloading...' : 'Download Ticket'}</button>
+                            </div>
                         </div>
                     </div>
                 </div>

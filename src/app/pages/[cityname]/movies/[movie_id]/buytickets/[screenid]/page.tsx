@@ -5,6 +5,14 @@ import './selectSeat.css'
 import Link from 'next/link'
 import { useParams,usePathname,useSearchParams } from 'next/navigation'
 import { toast } from 'react-toastify'
+import { loadStripe } from '@stripe/stripe-js'
+import Loading from '@/components/Loading/Loading'
+
+const stripeKey=process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+if(!stripeKey){
+    toast.error('Missing Stripe Publishable Key')
+}
+const stripePromise = loadStripe(stripeKey);
 
 const Page = () => {
     const params=useParams();
@@ -190,7 +198,7 @@ const Page = () => {
     };
 
 
-    const handleBooking=()=>{
+    const handleBooking=async()=>{
         if(selectedSeats.length===0){
             toast.error('Please select a seat',{
                 position: 'top-center',
@@ -198,48 +206,43 @@ const Page = () => {
             return;
         }
         setIsBooking(true); // Disable the button
-        
-        fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/movie/bookticket`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-            body: JSON.stringify(booking_details)
-        })
-            .then(res => res.json())
-            .then(response => {
-                if (response.ok) {
-                    setIsBooking(false); // Enable the button
-                    toast.success('Booking Successful',{
-                        position: 'top-center',
-                    })
-                    console.log(response)
-                    window.location.href = '/profile'
-                }
-                else {
-                    setIsBooking(false); // Enable the button
-                    console.log(response)
-                }
-            })
-            .catch(err => {
-                setIsBooking(false); // Enable the button
-                console.log(err)})
+        try {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/movie/create-checkout-session`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              credentials: 'include',
+              body: JSON.stringify({
+                seats: selectedSeats,
+                movieTitle: movie.title,
+                totalPrice: selectedSeats.reduce((acc, seat) => acc + seat.price, 0),
+                showTime: selectedTime ? selectedTime.showTime : '',
+                showDate: date,
+                movieId: movie_id,
+                screenId: screenid,
+              },),
+            });
+            const session = await res.json();
+      
+            const stripe = await stripePromise;
+
+            const bookingDetails={
+                showTime: selectedTime ? selectedTime.showTime : '',
+                showDate: date,
+                movieId: movie_id,
+                screenId: screenid,
+                seats: selectedSeats,
+                totalPrice: selectedSeats.reduce((acc, seat) => acc + seat.price, 0),
+                paymenId:session.payment_intent,
+                paymentType: 'online',
+            };
+
+            await stripe.redirectToCheckout({ sessionId: session.id });
+          } catch (error) {
+            toast.error('Something went wrong');
+            console.error(error);
+          }
+
     }
-
-
-    let booking_details={
-        showTime: selectedTime ? selectedTime.showTime : '',
-        showDate: date,
-        movieId: movie_id,
-        screenId: screenid,
-        seats: selectedSeats,
-        totalPrice: selectedSeats.reduce((acc, seat) => acc + seat.price, 0),
-        paymentId: '123456789',
-        paymentType: 'online'
-    }
-
-    console.log(booking_details);
 
 
   return (
@@ -301,7 +304,7 @@ const Page = () => {
                             disabled={isBooking}
                         >{isBooking ? 'Booking...' : 'Book Now'}</button>
                     </div>
-                </div>:<div>Loading...</div>
+                </div>:<Loading/>
             }
         </div>
   )

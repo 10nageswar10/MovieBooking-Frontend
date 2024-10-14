@@ -103,6 +103,9 @@ const Signup = () => {
         if(!formData.email){
             validationErrors.email='Email is Required';
         }
+        if(!formData.email.includes('@')){
+            validationErrors.email='Give a valid email Id'
+        }
         if(!formData.password){
             validationErrors.password='Password is Required';
         }
@@ -111,6 +114,9 @@ const Signup = () => {
         }
         if(!formData.city){
             validationErrors.city='City is Required';
+        }
+        if(formData.password.length<6){
+            validationErrors.password='Password must be at least 6 characters long'
         }
 
         if(Object.keys(validationErrors).length>0){

@@ -1,22 +1,33 @@
 'use client'
 import React from 'react'
 import './profilepage.css'
-import { useState,useEffect} from 'react'
+import { useState,useEffect,useCallback} from 'react'
 import Image from 'next/image'
 import empty_book from '@/assets/empty_book.jpg'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { toast } from 'react-toastify'
+import { Span } from 'next/dist/trace'
 
 const Page = () => {
     const router=useRouter();
     const [bookings,setBookings]=React.useState<any>([])
     const [user,setUser]=React.useState<any>(null)
+    const [verified,setVerified]=React.useState<boolean>(false)
+    const [cancelBookingDiv,setCancelBookingDiv]=React.useState<boolean>(false)
 
-    const formatDate = (isoDateString:any) => {
+    const [cancelledBookings,setCancelledBookings]=React.useState<any>([])
+
+    const formatDate = (isoDateString: any) => {
+        if (!isoDateString) {
+            console.error('Invalid date input');
+            return '';
+        }
         const date = new Date(isoDateString);
-        return new Intl.DateTimeFormat('en-US', { 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
+        return new Intl.DateTimeFormat('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
         }).format(date);
     };
 
@@ -46,82 +57,142 @@ const Page = () => {
     
         return `${hours}:${minutesStr} ${ampm}`;
     }
+    const formatDateTime = (isoDateString:any) => {
+        if (!isoDateString) {
+            console.error('Invalid date input');
+            return '';
+        }
+        const date = new Date(isoDateString);
+    
+        const options = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true,
+        };
+    
+        return date.toLocaleString('en-US', options);
+    };
 
-    const getMovieName=async(movieId:string)=>{
-       try{
-        const response=await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/movie/movies/${movieId}`,{
-            method:'GET',
-            headers:{
-                'Content-Type':'application/json',
-            },
-            credentials:'include',
-        })
-        const data=await response.json()
-        if(data.ok){
-            return data.data.title
-        }
-        else{
-            console.log(data)
-            return 'unknown Movie'
-        }
-       }
-       catch(err){
-        console.log(err)
-       }
-    }
-    const getBookings=React.useCallback(async()=>{
-        try{
-            const response=await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/movie/getuserbookings`,{
-                method:'GET',
-                headers:{
-                    'Content-Type':'application/json',
+    const getMovieName = useCallback(async (movieId: string) => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/movie/movies/${movieId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
                 },
-                credentials:'include',
-            })
-            const data=await response.json();
-            if(data.ok){
-                console.log(data)
+                credentials: 'include',
+            });
+            const data = await response.json();
+            if (data.ok) {
+                return data.data.title;
+            } else {
+                console.log(data);
+                return 'Unknown Movie';
+            }
+        } catch (err) {
+            console.log(err);
+            return 'Unknown Movie';
+        }
+    }, []);
+
+    const getBookings = useCallback(async () => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/movie/getuserbookings`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            });
+            const data = await response.json();
+            if (data.ok) {
+                console.log(data);
                 const bookingsWithTitles = await Promise.all(
                     data.data.filter((booking: any) => booking !== null).map(async (booking: any) => {
                         const movieTitle = await getMovieName(booking.movieId);
                         return { ...booking, movieTitle };
                     })
-                )
-                setBookings(bookingsWithTitles)
+                );
+                setBookings(bookingsWithTitles);
+            } else {
+                console.log(data);
             }
-            else{
-                console.log(data)
+        } catch (err) {
+            console.log(err);
+        }
+    }, [getMovieName]);
+
+    const getUserData = useCallback(async () => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/auth/getuser`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            });
+            const data = await response.json();
+            if (data.ok) {
+                console.log(data);
+                if (data.data.verified === true) {
+                    setVerified(true);
+                }
+                setUser(data.data);
+            } else {
+                console.log(data);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }, []);
+
+    const getCancelledBookings = useCallback(async () => {
+        if (user && user._id) {
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/movie/cancelledbookings/${user._id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                });
+                const data = await response.json();
+                if (data.ok) {
+                    console.log(data);
+                    const cancelledBookingsWithTitles = await Promise.all(
+                        data.data.filter((booking: any) => booking !== null).map(async (booking: any) => {
+                            const movieTitle = await getMovieName(booking.bookedMovieId);
+                            return { ...booking, movieTitle };
+                        })
+                    );
+                    setCancelledBookings(cancelledBookingsWithTitles);
+                } else {
+                    console.log(data);
+                }
+            } catch (err) {
+                console.log(err);
             }
         }
-        catch(err){
-            console.log(err)
-        }
-    },[])
-    const getUserData=React.useCallback(async()=>{
-        fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/auth/getuser`,{
-            method:'GET',
-            headers:{
-                'Content-Type':'application/json',
-            },
-            credentials:'include',
-        })
-        .then((res)=>res.json())
-        .then((data)=>{
-            if(data.ok){
-                console.log(data)
-                setUser(data.data)
-            }
-            else{
-                console.log(data)
-            }
-        })
-    },[])
+    }, [user, getMovieName]);
+
+    const handleSendVerify = () => {
+        router.push(`/auth/verifyemail?userId=${user._id}&email=${user.email}`);
+    };
+
+    useEffect(() => {
+        getBookings();
+        getUserData();
+    }, [getBookings, getUserData]);
+
+    useEffect(() => {
+        getCancelledBookings();
+    }, [getCancelledBookings]);
 
 
-    React.useEffect(()=>{
-        getBookings()
-        getUserData()
-    },[getBookings,getUserData])
+    
 
     return (
     <div className="profile">
@@ -135,7 +206,10 @@ const Page = () => {
                             <h3>User</h3>
                             <p>{user?.name}</p>
                         </div><div className="detail">
-                            <h3>Email</h3>
+                            <div className='email-div'>
+                                <h3>Email</h3>{verified?<p className='verified verifylink'>Verified</p>:<button onClick={handleSendVerify} 
+                                className='verifylink'>Not Verified</button>}
+                            </div>
                             <p>{user?.email}</p>
                         </div>
                         <div className="detail">
@@ -146,8 +220,45 @@ const Page = () => {
                 </div>
             ):<p>No user Data</p>
         }
-        <div className="bookings">
-            <h2>Bookings</h2>
+        <div className='booking-options'>
+        <h2 className={cancelBookingDiv?'':'option-active'} onClick={()=>{setCancelBookingDiv(false)}}>Bookings</h2><h2 className={cancelBookingDiv?'option-active':''} onClick={()=>{setCancelBookingDiv(true)}}>Cancelled Bookings</h2>
+        </div>
+        {cancelBookingDiv?(
+            <div className="bookings">
+            {
+                cancelledBookings.length>0?(
+                    <div className="booking">
+                        {
+                        cancelledBookings
+                        .slice() // Create a shallow copy to avoid mutating the original array
+                        .reverse() // Reverse the order to get the last booked first
+                        .map((booking:any,index:any)=>{
+                            return (
+                                     <div className="ticket-details" key={index}>
+                                        <p className='details'><span className='detail-head'>Payment ID</span ><span className='cont paymentiddiv'>{booking.paymentId}</span></p>
+                                        <p className='details '><span className='detail-head'>Movie</span><span>{booking.movieTitle}</span></p>
+                                        <p className='details'>
+                                            <span className='detail-head'>Cancelled At</span>
+                                            <span className='cont'>{formatDateTime(booking.cancelledAt)}</span>
+                                        </p>
+                                        <p className='details'><span className='detail-head'>Amount</span><span className='cont'>Rs.{booking.totalAmount}</span></p>
+                                        <p className='details'><span className='detail-head'>Refund Status</span><span className='cont'>{booking.status=='REFUND-PENDING'?<span className='status-pending'>PENDING</span>:<span className='status-success'>REFUND SUCCESS</span>}</span></p>
+                                    </div>
+                            )
+                        })
+                    
+                        }
+                    </div>
+                ):(
+                    <div className="error">
+                        <Image src={empty_book} alt="empty_book" width={200} height={200}/>
+                        <p style={{'textAlign':'center','fontFamily':'sans-serif',}}>No Cancelled Bookings Found</p>
+                    </div>
+                )
+            } 
+        </div>
+        ):(
+            <div className="bookings">
             {
                 bookings.length>0?(
                     <div className="booking">
@@ -189,6 +300,7 @@ const Page = () => {
             } 
 
         </div>
+        )}
     </div>
   )
 }

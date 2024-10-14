@@ -154,8 +154,9 @@ const Signin = () => {
                 <button type="submit" className="main_button">
                     Login
                 </button>
+                <Link href='/auth/forgotpassword' className="fp-link" >Forgot Password</Link>
                 <p className="authlink">
-                    Don&apos;t have an account? <Link href="/auth/signup" className="link">Register</Link>
+                    Don&apos;t have an account?<Link href="/auth/signup" className="link">Register</Link>
                 </p>
             </form>
         </div>

@@ -1,4 +1,4 @@
-.main-cont{
+.viewticket-cont{
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
@@ -125,4 +125,14 @@
         padding: 5px 10px;
         cursor: not-allowed;
         text-decoration: none;
+}
+
+.viewticket-cont .button-div{
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+}
+
+.viewticket-cont .button-div button{
+    width: 25%;
 }
