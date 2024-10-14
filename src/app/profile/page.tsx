@@ -57,14 +57,15 @@ const Page = () => {
     
         return `${hours}:${minutesStr} ${ampm}`;
     }
-    const formatDateTime = (isoDateString:any) => {
+    
+    const formatDateTime = (isoDateString: string) => {
         if (!isoDateString) {
             console.error('Invalid date input');
             return '';
         }
         const date = new Date(isoDateString);
     
-        const options = {
+        const options: Intl.DateTimeFormatOptions = {
             year: 'numeric',
             month: 'long',
             day: 'numeric',
