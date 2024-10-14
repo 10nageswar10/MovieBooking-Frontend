@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback,Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import Image from 'next/image';
@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import './booking-success.css'
 import Loading from '@/components/Loading/Loading';
 
-const BookingSuccess = () => {
+const BookingSuccessComponent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const sessionId = searchParams.get('session_id');
@@ -16,7 +16,7 @@ const BookingSuccess = () => {
   const hasFetched=useRef(false);
 
   const [paymentId,setPaymentId]=useState<any>(null)
-  const [countdown, setCountdown] = useState(10);
+  const [countdown, setCountdown] = useState(0);
   
   const [dateofShow,setDateofShow]=useState<any>(null)
   const [moviename,setMovieName]=useState<any>(null)
@@ -62,7 +62,7 @@ const getMovieName=async(movieId:string)=>{
       try {
         setPaymentId(paymentIntent)
         setDateofShow(formatDate(session.metadata.showDate))
-        setMovieName(getMovieName(session.metadata.movieId))
+        setMovieName(await getMovieName(session.metadata.movieId))
         const bookingDetails = {
           showTime: session.metadata.showTime,
           showDate: session.metadata.showDate,
@@ -83,7 +83,9 @@ const getMovieName=async(movieId:string)=>{
         });
         const data = await res.json();
         if (data.ok) {
+          setLoading(false);
           toast.success('Ticket booked successfully');
+          setCountdown(10)
         } else {
           toast.error(data.message);
         }
@@ -113,8 +115,6 @@ const getMovieName=async(movieId:string)=>{
         } catch (error) {
             console.error('Error fetching session:', error);
             toast.error('Failed to fetch session data');
-        }finally{
-          setLoading(false);
         }
     };
     fetchSession();
@@ -172,5 +172,11 @@ const getMovieName=async(movieId:string)=>{
     </div>
   );
 };
+
+const BookingSuccess = () => (
+  <Suspense fallback={<Loading />}>
+    <BookingSuccessComponent />
+  </Suspense>
+);
 
 export default BookingSuccess;
