@@ -12,7 +12,8 @@ const Page = () => {
   useEffect(() => {
     // Decode the email parameter
     if (params.email) {
-        setEmailId(decodeURIComponent(params.email));
+      const email = Array.isArray(params.email) ? params.email[0] : params.email;
+      setEmailId(decodeURIComponent(email));
     }
 }, [params.email]);
 
