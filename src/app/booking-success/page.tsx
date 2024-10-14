@@ -56,6 +56,7 @@ const getMovieName=async(movieId:string)=>{
     const confirmBooking = useCallback(async (paymentIntent:any,session:any) => {
       if (!paymentIntent) {
         toast.error('Payment intent not found. Please try again.');
+        setLoading(false);
         return;
       }
       try {
@@ -82,9 +83,9 @@ const getMovieName=async(movieId:string)=>{
         });
         const data = await res.json();
         if (data.ok) {
+          setLoading(false);
           toast.success('Ticket booked successfully');
           setCountdown(10)
-          setLoading(false);
         } else {
           toast.error(data.message);
         }
@@ -114,8 +115,6 @@ const getMovieName=async(movieId:string)=>{
         } catch (error) {
             console.error('Error fetching session:', error);
             toast.error('Failed to fetch session data');
-        }finally{
-          setLoading(false);
         }
     };
     fetchSession();
