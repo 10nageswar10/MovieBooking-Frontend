@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback,Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import Image from 'next/image';
@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import './booking-success.css'
 import Loading from '@/components/Loading/Loading';
 
-const BookingSuccess = () => {
+const BookingSuccessComponent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const sessionId = searchParams.get('session_id');
@@ -62,7 +62,7 @@ const getMovieName=async(movieId:string)=>{
       try {
         setPaymentId(paymentIntent)
         setDateofShow(formatDate(session.metadata.showDate))
-        setMovieName(getMovieName(session.metadata.movieId))
+        setMovieName(await getMovieName(session.metadata.movieId))
         const bookingDetails = {
           showTime: session.metadata.showTime,
           showDate: session.metadata.showDate,
@@ -172,5 +172,11 @@ const getMovieName=async(movieId:string)=>{
     </div>
   );
 };
+
+const BookingSuccess = () => (
+  <Suspense fallback={<Loading />}>
+    <BookingSuccessComponent />
+  </Suspense>
+);
 
 export default BookingSuccess;
