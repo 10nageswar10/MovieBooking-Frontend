@@ -12,7 +12,7 @@ const stripeKey=process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 if(!stripeKey){
     toast.error('Missing Stripe Publishable Key')
 }
-const stripePromise = loadStripe(stripeKey);
+const stripePromise = stripeKey ? loadStripe(stripeKey) : null;
 
 const Page = () => {
     const params=useParams();
