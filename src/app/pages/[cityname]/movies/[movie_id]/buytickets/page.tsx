@@ -38,8 +38,13 @@ const Page = () => {
   const getTheatres = React.useCallback(async(date:string)=>{
     let movieId=movie_id;
     let city=cityname;
+    console.log(date);
+    const currentDate = new Date(date);
+    currentDate.setDate(currentDate.getDate() + 1);
+    const adjustedDate = currentDate.toISOString().split('T')[0]; // Format the date as YYYY-MM-DD
+    console.log(adjustedDate)
 
-    fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/movie/screensbymovieschedule/${city}/${date}/${movieId}`,{
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/movie/screensbymovieschedule/${city}/${adjustedDate}/${movieId}`,{
       method:'GET',
       headers:{
         'Content-Type':'application/json'
