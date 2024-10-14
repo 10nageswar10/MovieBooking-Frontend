@@ -5,9 +5,7 @@ import { useState,useEffect,useCallback} from 'react'
 import Image from 'next/image'
 import empty_book from '@/assets/empty_book.jpg'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { toast } from 'react-toastify'
-import { Span } from 'next/dist/trace'
+import Loading from '@/components/Loading/Loading'
 
 const Page = () => {
     const router=useRouter();
@@ -17,6 +15,8 @@ const Page = () => {
     const [cancelBookingDiv,setCancelBookingDiv]=React.useState<boolean>(false)
 
     const [cancelledBookings,setCancelledBookings]=React.useState<any>([])
+
+    const [loading,setLoading]=React.useState<any>(true);
 
     const formatDate = (isoDateString: any) => {
         if (!isoDateString) {
@@ -117,6 +117,7 @@ const Page = () => {
                         return { ...booking, movieTitle };
                     })
                 );
+                setLoading(false);
                 setBookings(bookingsWithTitles);
             } else {
                 console.log(data);
@@ -258,7 +259,7 @@ const Page = () => {
                 )
             } 
         </div>
-        ):(
+        ):(loading?<Loading />:
             <div className="bookings">
             {
                 bookings.length>0?(
@@ -300,7 +301,7 @@ const Page = () => {
                 )
             } 
 
-        </div>
+        </div>    
         )}
     </div>
   )
