@@ -14,6 +14,15 @@ const Page = () => {
   const [movie,setMovie]=React.useState<any>(null)
   const [theatres,setTheatres]=React.useState<any>(null)
 
+  const [count,setCount]=React.useState<any>(0)
+
+  const setDateTimeToZero = (date:any) => {
+    const newDate = new Date(date);
+    newDate.setHours(0, 0, 0, 0);
+    return newDate;
+  };
+
+
   const getMovie =React.useCallback(async()=>{
     fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/movie/movies/${movie_id}`,{
       method:'GET',
@@ -38,9 +47,8 @@ const Page = () => {
   const getTheatres = React.useCallback(async(date:string)=>{
     let movieId=movie_id;
     let city=cityname;
-    console.log(date);
+    console.log("Original Date:", date);
     const currentDate = new Date(date);
-    currentDate.setDate(currentDate.getDate() + 1);
     const adjustedDate = currentDate.toISOString().split('T')[0]; // Format the date as YYYY-MM-DD
     console.log(adjustedDate)
 
@@ -71,11 +79,6 @@ const Page = () => {
     getMovie()
   },[getMovie])
 
-  React.useEffect(()=>{
-    getTheatres(selectedDate)
-  },[getTheatres,selectedDate])
-
-
 
   return (
     <>
@@ -88,13 +91,19 @@ const Page = () => {
             <h3>{movie.genre.join(', ')}</h3>
           </div>
           <DatePicker getSelectedDay={(date:any)=>{
-            const newDate:any=new Date(date)
-            console.log(date)
-            setSelectedDate(newDate)
-            getTheatres(newDate);
+            console.log("Selected Date:", setDateTimeToZero(date));
+            setSelectedDate(setDateTimeToZero(date));
+            const adjustDate=new Date(date)
+            if(count!=0){
+              adjustDate.setDate(adjustDate.getDate() + 1);
+              getTheatres(adjustDate.toISOString().split('T')[0]);
+            }
+            else{
+              getTheatres(date.toISOString().split('T')[0]);
+              setCount(1)
+            }  
           }}
                     endDate={100}
-                    selectDate={selectedDate}
                     labelFormat={"MMMM"}
                     color={"#CD1818"}          
           />
