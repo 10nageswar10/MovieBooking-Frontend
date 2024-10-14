@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import Image from 'next/image';
@@ -53,35 +53,7 @@ const getMovieName=async(movieId:string)=>{
   }
 }
 
-  useEffect(() => {
-    console.log('sessionId:', sessionId);
-    if (!sessionId || hasFetched.current) return; // Exit if there's no sessionId or fetch has already happened
-    hasFetched.current = true; // Set to true before fetching
-    const fetchSession = async () => {
-        try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/movie/checkout-session/${sessionId}`);
-            const session = await res.json();
-
-            console.log('Fetched session:', session); // Log the fetched session
-            if (session.payment_intent) {
-              console.log('Payment Intent:',session.payment_intent)
-              confirmBooking(session.payment_intent,session)
-            }else {
-              console.log('Payment intent is null.');
-              toast.error('Payment not completed. Please try again.');
-          }
-        } catch (error) {
-            console.error('Error fetching session:', error);
-            toast.error('Failed to fetch session data');
-        }finally{
-          setLoading(false);
-        }
-    };
-    fetchSession();
-}, [sessionId]);
-
-
-    const confirmBooking = async (paymentIntent:any,session:any) => {
+    const confirmBooking = useCallback(async (paymentIntent:any,session:any) => {
       if (!paymentIntent) {
         toast.error('Payment intent not found. Please try again.');
         setLoading(false);
@@ -119,7 +91,37 @@ const getMovieName=async(movieId:string)=>{
         toast.error('Something went wrong while confirming the booking');
         console.error(error);
       } 
+    },[]);
+
+  useEffect(() => {
+    console.log('sessionId:', sessionId);
+    if (!sessionId || hasFetched.current) return; // Exit if there's no sessionId or fetch has already happened
+    hasFetched.current = true; // Set to true before fetching
+    const fetchSession = async () => {
+        try {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/movie/checkout-session/${sessionId}`);
+            const session = await res.json();
+
+            console.log('Fetched session:', session); // Log the fetched session
+            if (session.payment_intent) {
+              console.log('Payment Intent:',session.payment_intent)
+              confirmBooking(session.payment_intent,session)
+            }else {
+              console.log('Payment intent is null.');
+              toast.error('Payment not completed. Please try again.');
+          }
+        } catch (error) {
+            console.error('Error fetching session:', error);
+            toast.error('Failed to fetch session data');
+        }finally{
+          setLoading(false);
+        }
     };
+    fetchSession();
+}, [sessionId,confirmBooking]);
+
+
+
 
     useEffect(() => {
       if (!loading) {

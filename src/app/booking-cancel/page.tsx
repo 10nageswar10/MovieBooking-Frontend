@@ -6,7 +6,7 @@ import { useEffect,useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 
-const bookingCancel=() => {
+const BookingCancel=() => {
     const router=useRouter();  // Get the router instance from Next.js
     const [countdown, setCountdown] = useState(5);
 
@@ -43,4 +43,4 @@ const bookingCancel=() => {
   )
 }
 
-export default bookingCancel
+export default BookingCancel

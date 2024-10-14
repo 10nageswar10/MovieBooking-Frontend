@@ -55,7 +55,7 @@ React.useEffect(() => {
     setUserId(params.get('userId'));
     setEmail(params.get('email'));
     getUserData()
-  }, []);
+  }, [getUserData]);
 
   React.useEffect(() => {
     let timer:any;
