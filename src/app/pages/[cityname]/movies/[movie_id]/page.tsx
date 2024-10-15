@@ -138,7 +138,7 @@ const Moviepage = () => {
                             {
                                 movie.cast.map((cast:any,index:any)=>{
                                     return(
-                                        <SwiperSlide key={index} style={{width:'150px',height:'150px'}}>
+                                        <SwiperSlide key={index} style={{width:'150px',height:'180px'}}>
                                             <CelebCard {...cast}/>
                                         </SwiperSlide>
                                     )
@@ -183,7 +183,7 @@ const Moviepage = () => {
                                 {
                                     movie.crew.map((crew:any,index:any)=>{
                                         return(
-                                            <SwiperSlide key={index} style={{width:'150px',height:'150px'}}>
+                                            <SwiperSlide key={index} style={{width:'150px',height:'180px'}}>
                                                 <CelebCard {...crew}/>
                                             </SwiperSlide>
                                         )
