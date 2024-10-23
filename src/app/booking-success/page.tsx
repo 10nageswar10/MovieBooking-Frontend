@@ -91,6 +91,7 @@ const getMovieName=async(movieId:string)=>{
         }
       } catch (error) {
         toast.error('Something went wrong while confirming the booking');
+        router.push('/booking-cancel')
         console.error(error);
       } 
     },[]);
